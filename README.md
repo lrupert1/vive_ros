@@ -1,3 +1,5 @@
+Added support for the new VIVE trackers (https://www.vive.com/us/vive-tracker/)
+
 Installation instructions can be found on `INSTALL.md`.
 Video example: `https://youtu.be/1hiX0f6UAew`
 
