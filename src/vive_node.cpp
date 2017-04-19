@@ -89,7 +89,7 @@ bool VIVEnode::setOriginCB(std_srvs::Empty::Request& req, std_srvs::Empty::Respo
 {
   double tf_matrix[3][4];
   int index = 1, dev_type;
-  while (dev_type != 2) 
+  while (dev_type != 3) 
   {
     dev_type = vr_.GetDeviceMatrix(index++, tf_matrix);
   }
@@ -137,7 +137,8 @@ void VIVEnode::Run()
 
     int controller_count = 1;
     int lighthouse_count = 1;
-    for (int i=0; i<5; i++)
+    int neo_tracker_count = 1;
+    for (int i=0; i<10; i++)
     {
       int dev_type = vr_.GetDeviceMatrix(i, tf_matrix);
 
@@ -165,11 +166,18 @@ void VIVEnode::Run()
       {
         tf_broadcaster_.sendTransform(tf::StampedTransform(tf, ros::Time::now(), "world_vive", "controller"+std::to_string(controller_count++)));
       }
+      // It's a i dont know yet
+      if (dev_type == 3)
+      {
+        tf_broadcaster_.sendTransform(tf::StampedTransform(tf, ros::Time::now(), "world_vive", "neo_tracker"+std::to_string(neo_tracker_count++)));
+      }
       // It's a lighthouse
       if (dev_type == 4)
       {
         tf_broadcaster_.sendTransform(tf::StampedTransform(tf, ros::Time::now(), "world_vive", "lighthouse"+std::to_string(lighthouse_count++)));
       }
+
+      
 
     }
 

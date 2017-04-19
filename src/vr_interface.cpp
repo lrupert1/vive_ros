@@ -33,7 +33,7 @@ VRInterface::VRInterface()
   : error_(defaultErrorMsgCallback)
   , debug_(defaultDebugMsgCallback)
   , info_(defaultInfoMsgCallback)
-  , max_devices_(5) // or vr::k_unMaxTrackedDeviceCount
+  , max_devices_(vr::k_unMaxTrackedDeviceCount)
 {
   play_area_[0] = -1;
   play_area_[1] = -1;
@@ -55,6 +55,8 @@ bool VRInterface::Init()
   vr::EVRInitError eError = vr::VRInitError_None;
   
   pHMD_ = vr::VR_Init( &eError, vr::VRApplication_Scene );
+  std::cout << "HMDis Present Output: " << vr::VR_IsHmdPresent() << std::endl;
+  std::cout << "HMDis Error Output: " << vr::VR_GetVRInitErrorAsEnglishDescription(eError) << std::endl;
 
   if (eError != vr::VRInitError_None)
   {
@@ -91,14 +93,15 @@ void VRInterface::Update()
   {
     pHMD_->GetDeviceToAbsoluteTrackingPose(vr::TrackingUniverseRawAndUncalibrated, 0, device_poses_, max_devices_);
                                     
-    //~ for (vr::TrackedDeviceIndex_t device_index = vr::k_unTrackedDeviceIndex_Hmd; device_index < max_devices_; ++device_index)
-    //~ {
-      //~ if (device_poses_[device_index].bDeviceIsConnected && device_poses_[device_index].bPoseIsValid)
-      //~ {
-        //~ info_("device[" + std::to_string(device_index) + "]: " + std::to_string(pHMD_->GetTrackedDeviceClass(device_index)) + " " + std::to_string(device_poses_[device_index].eTrackingResult));
-      //~ }
-    //~ }
+    /*      for (vr::TrackedDeviceIndex_t device_index = vr::k_unTrackedDeviceIndex_Hmd; device_index < max_devices_; ++device_index)
+     {
+       if (device_poses_[device_index].bDeviceIsConnected && device_poses_[device_index].bPoseIsValid)
+       {
+        info_("device[" + std::to_string(device_index) + "]: " + std::to_string(pHMD_->GetTrackedDeviceClass(device_index)) + " " + std::to_string(device_poses_[device_index].eTrackingResult));
+       }
+       }*/
   }
+
 }
 
 bool VRInterface::IsDeviceConnected(int index)
